@@ -13,34 +13,35 @@
     - Apagamento de arquivo
     - Link entre diretório
 ## Disco Físico
-    - Partição: pedaço de um disco físico
-    - Volume: aquilo que o usuário vê como disco
-    - OBS: Normalmente, separar o disco físico em "n" partições significa visualizar "n" volumes diferentes (numa relação 1 pra 1). Porém, é possível fazer essa associação de maneira diferente
-    - *foto11-1*
-    - No Unix, é necessário baixar um Gerenciador de Volumes
-    - No Windows, isso é possível pela interface mas apenas em versões mais robustas/caras do SO
-    - Como um usuário utiliza arquivos que estão em diferentes volumes?
-        - Usando o nome do volume explicitamente (ex: F:/PastaQualquer/Arquivo.exe ou escolhendo F:/ como o volume atual)
-        - Sem usar o nome do volume explicitamente
-            - O nome do volume é obtido na criação dos arquivos
-                - Usado no Mainframe
-                - SO mantem um catálogo geral dos arquivos
-                - Limitação: não se pode ter o mesmo nome de arquivo em volumes diferentes
-            - O nome do volume é obtido na montagem
-                - Usa-se a operação de montagem
-                - Quando o computador boota, apenas o volume raíz é visível. Outros volumes podem existir, mas não podem ser usados.
-                - Para acessar um arquivo de um volume não visível, aplica-se o seguinte comando no cmd: "mount /dev/hdA2 /B", onde "/dev/hdA2" é o nome do volume e "B" é o diretório onde será mantido o volume
-                - *foto11-2*
-                - Nessa abordagem, o SO consegue mover os arquivos por baixo dos panos sem que os usuários saibam, pois verão a mesma árvore visível (mas talvez elas estejam em um volume diferente ao longo do tempo)
-                - Embora a montagem seja tipicamente do Unix, hoje em dia já é possível fazer montagem no Windows
-                - Ainda que o usuário possa ver a árvore visível como uma coisa só [mesmo que haja volumes diferentes representados], também se pode ver a separação dos volumes. Por exemplo: se houvesse uma tentativa e link entre um arquivo de um volume com um diretório do outro, isso não funcionaria, pois o diretório e o arquivo estão em volumes diferentes (até porque, a referência do inode é para o vetor de diretório que está no mesmo volume do diretório). Essa tentativa resulta em um erro e isso indica que os volumes são distintos (ex: "ln /A/x/ /C")
-                ```
-                - OBS: Existe um outro tipo de link chamado "link simbólico". Ele foi criado para resolver o problema acima. Ele tem uma imlpementação diferente de um link qualquer, mas permite conectar arquivos e diretórios de volumes diferentes.
-                - Comando: "ln -s /A/x /C"
-                - Esse link é um arquivo texto que é marcado como link simbólico (flag nos dados de controle). Quando o SO detecta que há um link simbólico, ele retorna o conteúdo do arquivo cujo caminho está no link simbólico
-                ```
-                - Uma questão problemática notável é em relação ao apagamento do arquivo. O contador de links só contabiliza links "normais". Caso o arquivo seja deletado dos diretórios com links normais, ele será de fato apagado. No entanto, o link simbólico continuará existindo, o que significa que tentar acessá-lo nessa situação daria erro de arquivo inexistente (em alguns casos, a interface indica arquivos linkados simbolicamente para que esse comportamento seja previsto)
-                - Embora tenha sido criado no Unix, ele também foi implementado no Windows. No entanto, não há programas [default] que façam chamada de link simbólico. Seria necessário baixar um programa para que faça link simbólico em aruqivo (no caso de link simbólico para diretório, há um programa [default] que permite essa criação)
+- Partição: pedaço de um disco físico
+- Volume: aquilo que o usuário vê como disco
+- OBS: Normalmente, separar o disco físico em "n" partições significa visualizar "n" volumes diferentes (numa relação 1 pra 1).
+Porém, é possível fazer essa associação de maneira diferente
+- *foto11-1*
+- No Unix, é necessário baixar um Gerenciador de Volumes
+- No Windows, isso é possível pela interface mas apenas em versões mais robustas/caras do SO
+- Como um usuário utiliza arquivos que estão em diferentes volumes?
+    - Usando o nome do volume explicitamente (ex: F:/PastaQualquer/Arquivo.exe ou escolhendo F:/ como o volume atual)
+    - Sem usar o nome do volume explicitamente
+        - O nome do volume é obtido na criação dos arquivos
+            - Usado no Mainframe
+            - SO mantem um catálogo geral dos arquivos
+            - Limitação: não se pode ter o mesmo nome de arquivo em volumes diferentes
+        - O nome do volume é obtido na montagem
+            - Usa-se a operação de montagem
+            - Quando o computador boota, apenas o volume raíz é visível. Outros volumes podem existir, mas não podem ser usados.
+            - Para acessar um arquivo de um volume não visível, aplica-se o seguinte comando no cmd: "mount /dev/hdA2 /B", onde "/dev/hdA2" é o nome do volume e "B" é o diretório onde será mantido o volume
+            - *foto11-2*
+            - Nessa abordagem, o SO consegue mover os arquivos por baixo dos panos sem que os usuários saibam, pois verão a mesma árvore visível (mas talvez elas estejam em um volume diferente ao longo do tempo)
+            - Embora a montagem seja tipicamente do Unix, hoje em dia já é possível fazer montagem no Windows
+            - Ainda que o usuário possa ver a árvore visível como uma coisa só [mesmo que haja volumes diferentes representados], também se pode ver a separação dos volumes. Por exemplo: se houvesse uma tentativa e link entre um arquivo de um volume com um diretório do outro, isso não funcionaria, pois o diretório e o arquivo estão em volumes diferentes (até porque, a referência do inode é para o vetor de diretório que está no mesmo volume do diretório). Essa tentativa resulta em um erro e isso indica que os volumes são distintos (ex: "ln /A/x/ /C")
+            ```
+            - OBS: Existe um outro tipo de link chamado "link simbólico". Ele foi criado para resolver o problema acima. Ele tem uma imlpementação diferente de um link qualquer, mas permite conectar arquivos e diretórios de volumes diferentes.
+            - Comando: "ln -s /A/x /C"
+            - Esse link é um arquivo texto que é marcado como link simbólico (flag nos dados de controle). Quando o SO detecta que há um link simbólico, ele retorna o conteúdo do arquivo cujo caminho está no link simbólico
+            ```
+            - Uma questão problemática notável é em relação ao apagamento do arquivo. O contador de links só contabiliza links "normais". Caso o arquivo seja deletado dos diretórios com links normais, ele será de fato apagado. No entanto, o link simbólico continuará existindo, o que significa que tentar acessá-lo nessa situação daria erro de arquivo inexistente (em alguns casos, a interface indica arquivos linkados simbolicamente para que esse comportamento seja previsto)
+            - Embora tenha sido criado no Unix, ele também foi implementado no Windows. No entanto, não há programas [default] que façam chamada de link simbólico. Seria necessário baixar um programa para que faça link simbólico em aruqivo (no caso de link simbólico para diretório, há um programa [default] que permite essa criação)
     
 ### Link Simbólico x Atalho do Windows (.lnk)
 - Embora ambos de certa forma possuam o conteúdo do caminho do diretório para onde ambos referenciam
@@ -135,38 +136,38 @@
     - O parâmetro "a_partir_de_onde" tipicamente é o início do arquivo, o fim do arquivo e a posição atual
 - No Windows, as chamadas de abertura, leitura, escrita e troca da posição taual dos arquivos são bem parecidas, mas possuem o prefixo "file" (no caso lseek é fileseek) e existe um parâmetro a mais no fileopen do Windows que controla o acesso simultâneo a arquivos
 ### Arquivo esparso
+```c
+// Suponha um arquivo de 4kb (4096 bytes) chamado e.dad
+fd = open("e.dad", O_RDWR)
+;
+lseek(fd, 2048, SEEK_END);
+write(fd, buf, 1024);
+```
+- No exemplo acima, alguns SOs aceitam que sejam escritos bytes em uma parte após o fim, ficando um espaço vazio que não existe no disco. Caso ele seja lido, ele é lido com bytes zeros, como se não existisse o espaço vazio no disco. No entanto, o espaço ocupado no disco é menor que o tamanho lógico do arquivo. Isto é: ele ocupa 5kb, mas possui um tamanho lógico de 7kb. Esse tipo de arquivo com esse "espaço vazio" é chamdao de arquivo esparso.
+- Em um arquivo não esparso, o espaço ocupado no disco é igual ou maior que o tamanho lógico do arquivo. É trivial quando é igual, mas o espaço pode ser maior pois esse armazenamento é baseado em bloco, que possuem um espaço mínimo. O pedaço não ocupado é uma fragmentação interna
+- Importante distinguir a visão física e lógica do arquivo. Escrever após o fim do arqiuvo não significa roubar espaço de outro arquivo, pois na visão física, os arquivos podem estar completamente dispersos no volume do disco. Enquanto a visão lógica são bytes, a visão física são blocos. Se nada é salvo em um bloco, eles não existem fisicamente. Por outro lado, um bloco ter algum conteúdo implica em ele existir integralmente no disco, o que justifica a fragmentação interna supracitada
+- Os arquivos esparsos podem ser utilizados de forma elegante ou de forma "quebra-galho". 
+- Ex: matriz de inteiros ("m.dad")
+    - *foto11-3* (ai,j = 0, exceto a3,3 = 3; a5,2 = 28)
+    - Espaço gasto pela matriz = qtd_elementos * espaco_ocupado_por_um_elemento
+    - Espaço gasto pela matriz = qtd_linhas * qtd_colunas * espacoOcupadoPorUmElemento
+    - Ex: 1024 * 1024 * 4 (numa matriz de inteiros em uma CPU de 32 bits, o elemento inteiro tem 4 bytes) = 4MB
+
     ```c
-    // Suponha um arquivo de 4kb (4096 bytes) chamado e.dad
-    fd = open("e.dad", O_RDWR)
-    ;
-    lseek(fd, 2048, SEEK_END);
-    write(fd, buf, 1024);
-    ```
-    - No exemplo acima, alguns SOs aceitam que sejam escritos bytes em uma parte após o fim, ficando um espaço vazio que não existe no disco. Caso ele seja lido, ele é lido com bytes zeros, como se não existisse o espaço vazio no disco. No entanto, o espaço ocupado no disco é menor que o tamanho lógico do arquivo. Isto é: ele ocupa 5kb, mas possui um tamanho lógico de 7kb. Esse tipo de arquivo com esse "espaço vazio" é chamdao de arquivo esparso.
-    - Em um arquivo não esparso, o espaço ocupado no disco é igual ou maior que o tamanho lógico do arquivo. É trivial quando é igual, mas o espaço pode ser maior pois esse armazenamento é baseado em bloco, que possuem um espaço mínimo. O pedaço não ocupado é uma fragmentação interna
-    - Importante distinguir a visão física e lógica do arquivo. Escrever após o fim do arqiuvo não significa roubar espaço de outro arquivo, pois na visão física, os arquivos podem estar completamente dispersos no volume do disco. Enquanto a visão lógica são bytes, a visão física são blocos. Se nada é salvo em um bloco, eles não existem fisicamente. Por outro lado, um bloco ter algum conteúdo implica em ele existir integralmente no disco, o que justifica a fragmentação interna supracitada
-    - Os arquivos esparsos podem ser utilizados de forma elegante ou de forma "quebra-galho". 
-    - Ex: matriz de inteiros ("m.dad")
-        - *foto11-3* (ai,j = 0, exceto a3,3 = 3; a5,2 = 28)
-        - Espaço gasto pela matriz = qtd_elementos * espaco_ocupado_por_um_elemento
-        - Espaço gasto pela matriz = qtd_linhas * qtd_colunas * espacoOcupadoPorUmElemento
-        - Ex: 1024 * 1024 * 4 (numa matriz de inteiros em uma CPU de 32 bits, o elemento inteiro tem 4 bytes) = 4MB
+    int m[1024][1024];
+    fd = open("m.dad", O_WRONLY);
 
-        ```c
-        int m[1024][1024];
-        fd = open("m.dad", O_WRONLY);
-
-        for (int i = 0; i < 1024; i++) {
-            if (linha_so_tem_zeros(m[i])) {
-                lseek(fd, 4096, SEEK_CUR);
-            } else {
-                write(fd, m[i], 4096);
-            }
+    for (int i = 0; i < 1024; i++) {
+        if (linha_so_tem_zeros(m[i])) {
+            lseek(fd, 4096, SEEK_CUR);
+        } else {
+            write(fd, m[i], 4096);
         }
-        ```
-        
-        - Nesse caso, o espaço ocupado em disco é muito menor, pois apenas as linhas com valores diferentes de zero serão escritas. No entanto, os espaços vazios serão lidos, como visto anteriormente.
-    - Ex: rotacionar arquivo de log
-        - Como os arquivos de log poderiam ficar gigantescos, eles normalmente são programados para serem salvos por dia, e aí caso o disco comece a encher (acima de um dado limite), os arquivos mais antigos são deletados. No Windows, existe uma chamada para destruir um pedaço de um arquivo, liberando o espaço em disco desse pedaço. Logo, para casos em que os arquivos não são rotacionados ou que o log é grande demais, pode-se deletar pedaços indesejados (como o início do arquivo de log) para torná-los esparsos.
-        
+    }
+    ```
+
+    - Nesse caso, o espaço ocupado em disco é muito menor, pois apenas as linhas com valores diferentes de zero serão escritas. No entanto, os espaços vazios serão lidos, como visto anteriormente.
+- Ex: rotacionar arquivo de log
+    - Como os arquivos de log poderiam ficar gigantescos, eles normalmente são programados para serem salvos por dia, e aí caso o disco comece a encher (acima de um dado limite), os arquivos mais antigos são deletados. No Windows, existe uma chamada para destruir um pedaço de um arquivo, liberando o espaço em disco desse pedaço. Logo, para casos em que os arquivos não são rotacionados ou que o log é grande demais, pode-se deletar pedaços indesejados (como o início do arquivo de log) para torná-los esparsos.
+
 
