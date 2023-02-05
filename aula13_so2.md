@@ -12,7 +12,7 @@
 - Existe uma estrutura de controle que indica se um bloco está livre ou não
 - Existem duas formas de controlar blocos livres:
     - I) Vetor de bits de blocos livres ou bitmap de blocos livres
-        - Ex:
+        
         | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 | 11 | 12 |
         |----|----|----|----|----|----|----|----|----|----|----|----|
         | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 0  | 0  | 0  |
