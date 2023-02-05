@@ -1,4 +1,4 @@
-# Aula 12 - Sistemas Operacionais II
+# Aula 13 - Sistemas Operacionais II
 ## Resumo da última aula
 - Tipos de alocação de arquivo no volume:
     - I) Alocação contínua
