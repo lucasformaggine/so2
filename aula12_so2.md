@@ -42,6 +42,7 @@ para evitar múltiplas verificações; ela só precisa ser feita na chamada open
 - II) Alocação encadeada
 
     | Nome | Bloco Inicial |
+    |------|---------------|
     |A|2
     |B|5
     |C|8
