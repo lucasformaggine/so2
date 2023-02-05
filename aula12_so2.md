@@ -96,7 +96,7 @@ para evitar múltiplas verificações; ela só precisa ser feita na chamada open
     - Embora seria possível prolongar essa ideia para mais indireções, normalmente a implementação para na tripla indireção. Para estender o tamanho máximo de um arquivo, a solução é formatar o disco de modo a aumentar o tamanho do bloco. Ex:
         - Qtd. elementos em bloco de indireção = tamanho do vetor / espaço ocupadlo por um elemento = 2KB / 4B = 512 elementos
         - Qtd. máxima de blocos guardados = 10 + 512 + 512^2 + 512^3 = 128M blocos
-        - Tamanho máximo de um arquivo = 128M * 2KB = 128GB
+        - Tamanho máximo de um arquivo = 128M * 2KB = 256GB
         - Dobrar o tamanho do bloco aumentou em 16 vezes o tamanho máximo do arquivo
     - Hoje em um dia, o tamanho comum de um bloco é 4KB. Existe fragmentação interna em média de 2KB, mas possibilita volumes grandes.
 - V) Alocação por extensão
